@@ -10,7 +10,7 @@ class FfmpegConan(ConanFile):
     url = "https://github.com/conanos/FFmpeg"
     homepage = "https://ffmpeg.org"
     license = "LGPL-v2.1+,GPL-v2+"
-    exports = ["COPYING.*"]
+    exports = ["COPYING.*", "pc/*"]
     generators = "visual_studio", "gcc"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
@@ -105,6 +105,34 @@ class FfmpegConan(ConanFile):
                 for i in ["lib","bin"]:
                     self.copy("*", dst=os.path.join(self.package_folder,i), src=os.path.join(self.build_folder,"..","msvc",i,rplatform))
             self.copy("*", dst=os.path.join(self.package_folder,"licenses"), src=os.path.join(self.build_folder,"..", "msvc","licenses"))
+
+            tools.mkdir(os.path.join(self.package_folder,"lib","pkgconfig"))
+            for name in ["avcodec","avdevice","avfilter","avformat","avutil","swresample","swscale"]:
+                lib = "-l"+name+"d" if self.options.shared else "-l"+name
+                shutil.copy(os.path.join(self.build_folder,"pc","lib"+name+".pc.in"),
+                            os.path.join(self.package_folder,"lib","pkgconfig","lib"+name+".pc"))
+                replacements = {
+                    "@prefix@" : self.package_folder,
+                    "-l"+name  : lib 
+                }
+                if name == "avcodec":
+                    replacements.update({"@version@":"58.42.104"})
+                if name == "avdevice":
+                    replacements.update({"@version@":"58.6.101"})
+                if name == "avfilter":
+                    replacements.update({"@version@":"7.46.101"})
+                if name == "avformat":
+                    replacements.update({"@version@":"58.25.100"})
+                if name == "avutil":
+                    replacements.update({"@version@":"56.25.100"})
+                if name == "swresample":
+                    replacements.update({"@version@":"3.4.100"})
+                if name == "swscale":
+                    replacements.update({"@version@":"5.4.100"})
+                for s, r in replacements.items():
+                    tools.replace_in_file(os.path.join(self.package_folder,"lib","pkgconfig","lib"+name+".pc"),s,r)
+            
+            
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
