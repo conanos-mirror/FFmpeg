@@ -97,7 +97,14 @@ class FfmpegConan(ConanFile):
                     msbuild.build("ffmpeg.sln",upgrade_project=True,platforms={'x86': 'Win32', 'x86_64': 'x64'},build_type=build_type)
 
     def package(self):
-        pass
+        if self.settings.os == 'Windows':
+            platforms={'x86': 'Win32', 'x86_64': 'x64'}
+            rplatform = platforms.get(str(self.settings.arch))
+            self.copy("*", dst=os.path.join(self.package_folder,"include"), src=os.path.join(self.build_folder,"..", "msvc","include"))
+            if self.options.shared:
+                for i in ["lib","bin"]:
+                    self.copy("*", dst=os.path.join(self.package_folder,i), src=os.path.join(self.build_folder,"..","msvc",i,rplatform))
+            self.copy("*", dst=os.path.join(self.package_folder,"licenses"), src=os.path.join(self.build_folder,"..", "msvc","licenses"))
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
