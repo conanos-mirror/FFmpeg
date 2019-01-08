@@ -5,7 +5,7 @@ import os, shutil
 
 class FfmpegConan(ConanFile):
     name = "FFmpeg"
-    version = "4.2.r92858"
+    version = "3.4.2.r91261"
     description = "FFmpeg is a collection of libraries and tools to process multimedia content such as audio, video, subtitles and related metadata."
     url = "https://github.com/conanos/FFmpeg"
     homepage = "https://ffmpeg.org"
@@ -116,19 +116,19 @@ class FfmpegConan(ConanFile):
                     "-l"+name  : lib 
                 }
                 if name == "avcodec":
-                    replacements.update({"@version@":"58.42.104"})
+                    replacements.update({"@version@":"58.20.100"})
                 if name == "avdevice":
-                    replacements.update({"@version@":"58.6.101"})
+                    replacements.update({"@version@":"58.4.100"})
                 if name == "avfilter":
-                    replacements.update({"@version@":"7.46.101"})
+                    replacements.update({"@version@":"7.25.100"})
                 if name == "avformat":
-                    replacements.update({"@version@":"58.25.100"})
+                    replacements.update({"@version@":"58.17.100"})
                 if name == "avutil":
-                    replacements.update({"@version@":"56.25.100"})
+                    replacements.update({"@version@":"56.18.102"})
                 if name == "swresample":
-                    replacements.update({"@version@":"3.4.100"})
+                    replacements.update({"@version@":"3.2.100"})
                 if name == "swscale":
-                    replacements.update({"@version@":"5.4.100"})
+                    replacements.update({"@version@":"5.2.100"})
                 for s, r in replacements.items():
                     tools.replace_in_file(os.path.join(self.package_folder,"lib","pkgconfig","lib"+name+".pc"),s,r)
             
