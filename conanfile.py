@@ -5,7 +5,7 @@ import os, shutil
 
 class FfmpegConan(ConanFile):
     name = "FFmpeg"
-    version = "3.4.2.r91261"
+    version = "3.3.4.r87868"
     description = "FFmpeg is a collection of libraries and tools to process multimedia content such as audio, video, subtitles and related metadata."
     url = "https://github.com/conanos/FFmpeg"
     homepage = "https://ffmpeg.org"
@@ -40,7 +40,7 @@ class FfmpegConan(ConanFile):
         self.requires.add("libvorbis/1.3.6@conanos/stable")
         self.requires.add("libvpx/1.7.0@conanos/stable")
         self.requires.add("libtheora/1.1.1@conanos/stable")
-        self.requires.add("x264/0.157.r2935@conanos/stable")
+        self.requires.add("x264/0.152.r2854@conanos/stable")
         self.requires.add("AMF/1.4.9@conanos/stable")
         self.requires.add("lzma/5.2.4@conanos/stable")
         self.requires.add("xvid/1.3.4-3@conanos/stable")
@@ -116,19 +116,19 @@ class FfmpegConan(ConanFile):
                     "-l"+name  : lib 
                 }
                 if name == "avcodec":
-                    replacements.update({"@version@":"58.20.100"})
+                    replacements.update({"@version@":"57.108.100"})
                 if name == "avdevice":
-                    replacements.update({"@version@":"58.4.100"})
+                    replacements.update({"@version@":"57.11.100"})
                 if name == "avfilter":
-                    replacements.update({"@version@":"7.25.100"})
+                    replacements.update({"@version@":"6.108.100"})
                 if name == "avformat":
-                    replacements.update({"@version@":"58.17.100"})
+                    replacements.update({"@version@":"57.84.100"})
                 if name == "avutil":
-                    replacements.update({"@version@":"56.18.102"})
+                    replacements.update({"@version@":"55.79.100"})
                 if name == "swresample":
-                    replacements.update({"@version@":"3.2.100"})
+                    replacements.update({"@version@":"2.10.100"})
                 if name == "swscale":
-                    replacements.update({"@version@":"5.2.100"})
+                    replacements.update({"@version@":"4.9.100"})
                 for s, r in replacements.items():
                     tools.replace_in_file(os.path.join(self.package_folder,"lib","pkgconfig","lib"+name+".pc"),s,r)
             
